@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Grocery</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+<div class="container hero-inner">
+<div class="topbar"><div class="brand"><div class="brand-mark">🛒</div><span>Smart Grocery</span></div><div class="hero-badge">✨ clever einkaufen</div></div>
+<p class="eyebrow">SMART SHOPPING</p>
+<h1>Finde deinen günstigsten Einkauf.</h1>
+<p class="subtitle">Vergleiche Billa, Hofer und Spar und finde mit deinem Budget die günstigste Möglichkeit für deinen Einkauf.</p>
+<div class="hero-chips"><span class="hero-chip">🛍️ Preise vergleichen</span><span class="hero-chip">💶 Budget beachten</span><span class="hero-chip">🌱 Clever sparen</span></div>
+</div>
+</header>
+
+<main><div class="container">
+
+<section class="card setup-card">
+<div class="section-title"><div class="title-with-icon"><div class="section-icon blush">⚙️</div><div><h2>Dein Einkauf</h2><p>Lege Budget, Supermärkte und Rabatte fest.</p></div></div><span class="limit-badge">max. 200 Produkte</span></div>
+
+<div class="grid three">
+<label>Budget (€)<input id="budget" type="number" min="0" max="40000" step="0.01" placeholder="z. B. 50"></label>
+<label>Max. Supermärkte<select id="maxMarkets"><option value="1">1 Supermarkt</option><option value="2" selected>2 Supermärkte</option><option value="3">3 Supermärkte</option></select></label>
+<div class="info-box"><div>💡</div><div><strong>So funktioniert's</strong><span>Wir suchen die günstigste erlaubte Kombination.</span></div></div>
+</div>
+
+<div class="discounts">
+<label>Billa Rabatt (%)<input id="discountBilla" type="number" min="0" max="100" step="0.1" value="0"></label>
+<label>Hofer Rabatt (%)<input id="discountHofer" type="number" min="0" max="100" step="0.1" value="0"></label>
+<label>Spar Rabatt (%)<input id="discountSpar" type="number" min="0" max="100" step="0.1" value="0"></label>
+</div>
+
+<div class="product-picker">
+<div class="section-title small-title"><div><h2>Produkte hinzufügen</h2><p>Die Produktdaten kommen automatisch aus der JSON-Datei.</p></div></div>
+<div class="grid four">
+<label>Produkt<select id="productSelect"><option value="">Produkt auswählen...</option></select></label>
+<label>Menge<input id="quantity" type="number" min="1" max="200" value="1"></label>
+<div class="info-box product-info"><div>🛍️</div><div><strong id="selectedCategory">Noch kein Produkt</strong><span id="selectedPrices">Bitte ein Produkt auswählen.</span></div></div>
+<button id="addProduct" class="primary">Hinzufügen</button>
+</div>
+</div>
+
+<details class="custom-product">
+<summary>＋ Eigenes Produkt hinzufügen</summary>
+<p class="hint">Hier kannst du ein Produkt eingeben, das noch nicht in der Produktdatenbank vorhanden ist.</p>
+<div class="grid five">
+<label>Produktname<input id="customName" type="text" placeholder="z. B. Erdbeeren"></label>
+<label>Kategorie<input id="customCategory" type="text" placeholder="z. B. Obst"></label>
+<label>Billa (€)<input id="customBilla" type="number" min="0" max="200" step="0.01"></label>
+<label>Hofer (€)<input id="customHofer" type="number" min="0" max="200" step="0.01"></label>
+<label>Spar (€)<input id="customSpar" type="number" min="0" max="200" step="0.01"></label>
+</div>
+<button id="addCustomProduct" class="secondary">Eigenes Produkt hinzufügen</button>
+</details>
+</section>
+
+<section class="card">
+<div class="section-title"><div class="title-with-icon"><div class="section-icon green">🛍️</div><div><h2>Deine Einkaufsliste</h2><p>Hier siehst du alle ausgewählten Produkte.</p></div></div><button id="clearList" class="ghost">Liste leeren</button></div>
+<div id="shoppingList" class="shopping-list"></div>
+</section>
+
+<div class="action-area"><button id="calculate" class="primary big">Günstigsten Einkauf berechnen →</button></div>
+
+<section id="resultCard" class="card hidden">
+<div class="section-title"><div class="title-with-icon"><div class="section-icon lavender">✨</div><div><h2>Dein Ergebnis</h2><p>Die günstigste erlaubte Kombination.</p></div></div><span id="budgetStatus" class="status"></span></div>
+<div class="summary-grid">
+<div class="metric"><span>Gesamtkosten</span><strong id="totalResult">€0,00</strong></div>
+<div class="metric"><span>Produkte</span><strong id="productCountResult">0</strong></div>
+<div class="metric"><span>Gespart</span><strong id="savingResult">€0,00</strong></div>
+<div class="metric"><span>Supermärkte</span><strong id="marketCountResult">0</strong></div>
+</div>
+<div class="market-result"><div class="market-head"><span>Wo solltest du was kaufen?</span><span>Preis</span></div><div id="allocationResult"></div></div>
+</section>
+
+<section class="card">
+<div class="section-title"><div class="title-with-icon"><div class="section-icon blush">📊</div><div><h2>Deine Statistik</h2><p>Die Werte werden nur lokal in deinem Browser gespeichert.</p></div></div></div>
+<div class="stats-grid">
+<div class="stat"><strong id="averageSpend">€0,00</strong><span>Ø Einkaufswert</span></div>
+<div class="stat"><strong id="averageProducts">0</strong><span>Ø Produkte</span></div>
+<div class="stat"><strong id="purchaseCount">0</strong><span>Einkäufe</span></div>
+<div class="stat"><strong id="totalSpend">€0,00</strong><span>Gesamtausgaben</span></div>
+</div>
+</section>
+
+</div></main>
+<footer><div class="container">Smart Grocery <span>♡</span> clever vergleichen</div></footer>
+<script src="app.js"></script>
+</body>
+</html>
